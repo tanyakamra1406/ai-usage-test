@@ -81,16 +81,16 @@
 
 ## Stage 4: Atlas Metrics and Re-delivery
 
-- [ ] Implement workbook discovery and `Usage` sheet parsing.
-- [ ] Locate the real header rather than assuming it is in worksheet row 1.
-- [ ] Parse and normalize `User ID`, `Week Ending`, `Queries Run`, and `Active Days`.
-- [ ] Assign Atlas rows to reporting week starts.
-- [ ] Replace earlier records with the latest extract for each reporting week.
-- [ ] Count distinct Advisory people for Atlas WAU and WPU.
-- [ ] Add focused tests for workbook layout, week mapping, thresholds, and re-delivery replacement.
-- [ ] Update the README with Atlas handling and observed workbook/data issues.
-- [ ] Commit tested Atlas logic.
-- [ ] Do not push.
+- [x] Implement workbook discovery and `Usage` sheet parsing.
+- [x] Locate the real header rather than assuming it is in worksheet row 1.
+- [x] Parse and normalize `User ID`, `Week Ending`, `Queries Run`, and `Active Days`.
+- [x] Assign Atlas rows to reporting week starts.
+- [x] Replace earlier records with the latest extract for each reporting week.
+- [x] Count distinct Advisory people for Atlas WAU and WPU.
+- [x] Add focused tests for workbook layout, week mapping, thresholds, and re-delivery replacement.
+- [x] Update the README with Atlas handling and observed workbook/data issues.
+- [x] Commit the modular refactor and tested Atlas logic.
+- [ ] Do not push until explicitly authorized.
 
 ## Stage 5: Reporting Table and ANY
 

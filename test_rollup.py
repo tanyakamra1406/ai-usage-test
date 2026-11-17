@@ -3,6 +3,8 @@ from pathlib import Path
 
 from rollup import (
     advisory_ids,
+    atlas_week_start,
+    load_atlas_metrics,
     get_tool_config,
     load_latest_hr,
     load_config,
@@ -32,6 +34,47 @@ class ReportingWindowTests(unittest.TestCase):
         self.assertEqual(weeks[0].isoformat(), "2026-08-09")
         self.assertEqual(weeks[-1].isoformat(), "2026-09-27")
         self.assertEqual(len(weeks), 8)
+
+
+class AtlasMetricsTests(unittest.TestCase):
+    def test_week_mapping_and_latest_delivery_replacement(self):
+        import tempfile
+        from datetime import date
+        from openpyxl import Workbook
+
+        with tempfile.TemporaryDirectory() as directory:
+            atlas_dir = Path(directory)
+
+            first = Workbook()
+            first.active.title = "Usage"
+            first.active.append(["Atlas - Licence Usage Report"])
+            first.active.append([])
+            first.active.append(["User ID", "Week Ending", "Queries Run", "Active Days"])
+            first.active.append(["E123", date(2026, 8, 22), 10, 5])
+            first.save(atlas_dir / "atlas_usage_20260817.xlsx")
+
+            second = Workbook()
+            second.active.title = "Usage"
+            second.active.append(["Atlas - Licence Usage Report"])
+            second.active.append([])
+            second.active.append(["User ID", "Week Ending", "Queries Run", "Active Days"])
+            second.active.append(["E123", date(2026, 8, 22), 30, 3])
+            second.save(atlas_dir / "atlas_usage_20260824.xlsx")
+
+            week = date(2026, 8, 16)
+            metrics, stats = load_atlas_metrics(
+                atlas_dir,
+                {"E123"},
+                {"E123"},
+                [week],
+                wau_threshold=1,
+                wpu_threshold=25,
+            )
+
+        self.assertEqual(atlas_week_start(date(2026, 8, 22)), week)
+        self.assertEqual(metrics[week]["wau"], {"E123"})
+        self.assertEqual(metrics[week]["wpu"], {"E123"})
+        self.assertEqual(stats["atlas_replacements"], 1)
 
 
 class QuillMetricsTests(unittest.TestCase):

@@ -25,3 +25,13 @@ The supplied HR file contains 2,445 rows. Its latest records contain 1,507 uniqu
 Quill timestamps are parsed as UTC and assigned to the Sunday that starts their reporting week. Only `generation` events count; `open` and `rating` events are excluded. Activity counts distinct normalized Advisory employees, and exact duplicate rows do not increase counts.
 
 The supplied Quill file contains 94,558 rows. It contains 1,397 exact duplicate rows, 8,455 rows with ID whitespace/case differences, and 1,737 generation rows outside the reporting window. The implementation also separates unknown-HR and non-Advisory events from the Advisory result.
+
+## Stage 4: Atlas metrics
+
+Atlas workbooks are read from `data/atlas/` using the `Usage` sheet. The script locates the real header, normalizes IDs, maps `Week Ending` to Sunday week starts, and replaces an earlier delivery when a later extract covers the same week. In the supplied deliveries, the `20260907` and `20260913` extracts cover the same week; the later extract replaces the earlier one.
+
+The implementation uses `openpyxl`. Install it with:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
