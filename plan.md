@@ -70,14 +70,14 @@
 
 ## Stage 3: Quill Metrics
 
-- [ ] Implement Quill CSV loading and UTC timestamp parsing.
-- [ ] Filter events to the reporting window and `generation` event type.
-- [ ] Assign events to Sunday week starts.
-- [ ] Count distinct Advisory people for WAU and WPU.
-- [ ] Add focused tests for UTC boundaries, duplicate events, ID normalization, and thresholds.
-- [ ] Update the README with Quill handling and observed Quill data issues.
-- [ ] Commit tested Quill logic.
-- [ ] Do not push.
+- [x] Implement Quill CSV loading and UTC timestamp parsing.
+- [x] Filter events to the reporting window and `generation` event type.
+- [x] Assign events to Sunday week starts.
+- [x] Count distinct Advisory people for WAU and WPU.
+- [x] Add focused tests for UTC boundaries, duplicate events, ID normalization, and thresholds.
+- [x] Update the README with Quill handling and observed Quill data issues.
+- [x] Commit tested Quill logic.
+- [ ] Do not push until explicitly authorized.
 
 ## Stage 4: Atlas Metrics and Re-delivery
 
