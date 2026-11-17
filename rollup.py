@@ -6,6 +6,7 @@ from src.config import get_tool_config, load_config, reporting_weeks, parse_conf
 from src.hr import advisory_ids, load_latest_hr
 from src.quill import load_quill_metrics, parse_utc_timestamp, quill_week_start
 from src.atlas import atlas_week_start, load_atlas_metrics
+from src.reporting import build_reporting_rows, write_weekly_metrics
 
 
 DEFAULT_DATA_DIR = Path("data")
@@ -68,6 +69,23 @@ def main() -> None:
         )
     print(f"atlas_files={atlas_stats['atlas_files']}")
     print(f"atlas_replacements={atlas_stats['atlas_replacements']}")
+
+    quill_measured = {
+        week: week in quill_stats["measured_weeks"]
+        for week in weeks
+    }
+    atlas_measured = {
+        week: week in atlas_stats["measured_weeks"]
+        for week in weeks
+    }
+    rows = build_reporting_rows(
+        weeks,
+        quill_metrics,
+        atlas_metrics,
+        quill_measured,
+        atlas_measured,
+    )
+    write_weekly_metrics(Path("out/weekly_tool_metrics.csv"), rows)
 
 
 if __name__ == "__main__":

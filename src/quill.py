@@ -1,6 +1,7 @@
 import csv
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+from typing import Any
 
 from src.common import normalize_id
 
@@ -24,7 +25,7 @@ def load_quill_metrics(
     reporting_weeks: list[date],
     wau_threshold: int,
     wpu_threshold: int,
-) -> tuple[dict[date, dict[str, set[str]]], dict[str, int]]:
+) -> tuple[dict[date, dict[str, set[str]]], dict[str, Any]]:
     if wau_threshold < 1:
         raise ValueError("Quill WAU threshold must be at least 1")
     if wpu_threshold < wau_threshold:
@@ -44,6 +45,7 @@ def load_quill_metrics(
         "unknown_hr_rows": 0,
         "non_advisory_rows": 0,
         "generation_rows": 0,
+        "measured_weeks": set(),
     }
     seen_rows: set[tuple[tuple[str, str], ...]] = set()
 
@@ -76,6 +78,8 @@ def load_quill_metrics(
             if week not in allowed_weeks:
                 stats["outside_reporting_window_rows"] += 1
                 continue
+
+            stats["measured_weeks"].add(week)
 
             if not employee_id or employee_id not in known_hr_ids:
                 stats["unknown_hr_rows"] += 1

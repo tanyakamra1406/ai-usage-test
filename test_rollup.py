@@ -1,6 +1,8 @@
 import unittest
 from pathlib import Path
 
+from src.reporting import COLUMNS, build_reporting_rows, wpu_rate, write_weekly_metrics
+
 from rollup import (
     advisory_ids,
     atlas_week_start,
@@ -13,6 +15,71 @@ from rollup import (
     quill_week_start,
     reporting_weeks,
 )
+
+
+class ReportingTests(unittest.TestCase):
+    def test_reporting_rows_and_any_deduplication(self):
+        week = __import__("datetime").date(2026, 8, 9)
+        quill = {"wau": {"E123", "E456"}, "wpu": {"E123"}}
+        atlas = {"wau": {"E456", "E789"}, "wpu": {"E789"}}
+
+        rows = build_reporting_rows(
+            [week],
+            {week: quill},
+            {week: atlas},
+            {week: True},
+            {week: True},
+        )
+
+        self.assertEqual(rows[0]["tool_id"], "quill")
+        self.assertEqual(rows[0]["wau"], 2)
+        self.assertEqual(rows[0]["wpu"], 1)
+        self.assertEqual(rows[0]["wpu_rate"], "0.5000")
+        self.assertEqual(rows[2]["tool_id"], "ANY")
+        self.assertEqual(rows[2]["wau"], 3)
+        self.assertEqual(rows[2]["wpu"], 2)
+
+    def test_unmeasured_and_zero_wau(self):
+        week = __import__("datetime").date(2026, 8, 16)
+        empty = {"wau": set(), "wpu": set()}
+
+        rows = build_reporting_rows(
+            [week],
+            {week: empty},
+            {week: empty},
+            {week: True},
+            {week: False},
+        )
+
+        self.assertEqual(rows[0]["wpu_rate"], "Infinity")
+        self.assertEqual(rows[1]["wau"], "")
+        self.assertEqual(rows[1]["measured"], "false")
+        self.assertEqual(rows[2]["measured"], "false")
+        self.assertEqual(wpu_rate(3, 1), "0.3333")
+
+    def test_csv_columns_and_values(self):
+        import tempfile
+        import csv
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "weekly.csv"
+            week = __import__("datetime").date(2026, 8, 9)
+            rows = build_reporting_rows(
+                [week],
+                {week: {"wau": {"E123"}, "wpu": {"E123"}}},
+                {week: {"wau": set(), "wpu": set()}},
+                {week: True},
+                {week: True},
+            )
+            write_weekly_metrics(path, rows)
+
+            with path.open("r", encoding="utf-8", newline="") as handle:
+                reader = csv.DictReader(handle)
+                output_rows = list(reader)
+
+        self.assertEqual(tuple(reader.fieldnames), COLUMNS)
+        self.assertEqual(len(output_rows), 3)
+        self.assertEqual(output_rows[0]["measured"], "true")
 
 
 class ConfigurationTests(unittest.TestCase):

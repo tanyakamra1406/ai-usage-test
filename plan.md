@@ -2,39 +2,39 @@
 
 ## Working Agreements
 
-- [ ] Work proceeds one stage at a time and only after explicit authorization.
-- [ ] Commits stay on `main` and remain local until explicit authorization to push.
-- [ ] Do not push anything without permission.
-- [ ] Do not commit `data/` or generated ZIP files.
-- [ ] Commit the requirement spec or implementation README only when appropriate for the stage.
-- [ ] Keep assumptions visible and test the most likely edge cases.
-- [ ] Use the reporting configuration as the source of truth.
+- [x] Work proceeds one stage at a time and only after explicit authorization.
+- [x] Commits stay on `main` and remain local until explicit authorization to push.
+- [x] Do not push anything without permission.
+- [x] Do not commit `data/` or generated ZIP files.
+- [x] Commit the requirement spec or implementation README only when appropriate for the stage.
+- [x] Keep assumptions visible and test the most likely edge cases.
+- [x] Use the reporting configuration as the source of truth.
 
 ## Data and Rule Decisions
 
-- [ ] Normalize employee IDs by trimming surrounding whitespace and converting to uppercase.
-- [ ] Select each person's latest HR record by `Effective_Date`, then use the latest record for all reporting weeks.
-- [ ] Restrict output to employees whose latest HR record has `Division = ADV`.
-- [ ] Exclude IDs absent from the latest HR scope and IDs belonging to other divisions.
-- [ ] Parse Quill timestamps as UTC and assign events to Sunday-to-Saturday reporting weeks.
-- [ ] For Quill WAU, count distinct people with at least one `generation` event at the configured threshold.
-- [ ] For Quill WPU, count distinct Advisory people meeting the configured WPU threshold for generation events.
-- [ ] Do not count Quill duplicate event rows as additional people.
-- [ ] Parse Atlas workbook `Usage` sheets beginning after the title and blank rows.
-- [ ] Normalize Atlas `User ID`, `Queries Run`, and `Active Days` values.
-- [ ] Map Atlas `Week Ending` to the reporting week start, a Sunday.
-- [ ] Select the latest Atlas delivery for each reporting week when redeliveries overlap.
-- [ ] Use the configured Atlas WAU and WPU thresholds.
-- [ ] Mark a tool unmeasured and leave `wau`, `wpu`, and `wpu_rate` blank when it has no data for a week.
-- [ ] Keep measured zero-count tools distinct from unmeasured tools; measured zero results remain `0`.
-- [ ] Where `wau = 0`, write `Infinity` for `wpu_rate`, and document a README question about the policy before leadership sharing.
-- [ ] Implement `ANY` by unioning distinct active people across measured tools.
-- [ ] Implement `ANY` power users by unioning distinct people meeting a power threshold on at least one measured tool.
-- [ ] Deduplicate overlap across Quill and Atlas; a person is counted once in `ANY`.
-- [ ] Set `ANY.measured = true` only when both tools are measured for the week.
-- [ ] When `ANY` is not measured, leave `wau`, `wpu`, and `wpu_rate` blank.
-- [ ] Preserve `ANY` as a supplemental portfolio metric and explain that it is a distinct-person-at-least-one-tool measure, not an overlap or usage-quality measure.
-- [ ] Document any implementation rule that differs from the exercise or remains an unresolved policy decision.
+- [x] Normalize employee IDs by trimming surrounding whitespace and converting to uppercase.
+- [x] Select each person's latest HR record by `Effective_Date`, then use the latest record for all reporting weeks.
+- [x] Restrict output to employees whose latest HR record has `Division = ADV`.
+- [x] Exclude IDs absent from the latest HR scope and IDs belonging to other divisions.
+- [x] Parse Quill timestamps as UTC and assign events to Sunday-to-Saturday reporting weeks.
+- [x] For Quill WAU, count distinct people with at least one `generation` event at the configured threshold.
+- [x] For Quill WPU, count distinct Advisory people meeting the configured WPU threshold for generation events.
+- [x] Do not count Quill duplicate event rows as additional people.
+- [x] Parse Atlas workbook `Usage` sheets beginning after the title and blank rows.
+- [x] Normalize Atlas `User ID`, `Queries Run`, and `Active Days` values.
+- [x] Map Atlas `Week Ending` to the reporting week start, a Sunday.
+- [x] Select the latest Atlas delivery for each reporting week when redeliveries overlap.
+- [x] Use the configured Atlas WAU and WPU thresholds.
+- [x] Mark a tool unmeasured and leave `wau`, `wpu`, and `wpu_rate` blank when it has no data for a week.
+- [x] Keep measured zero-count tools distinct from unmeasured tools; measured zero results remain `0`.
+- [x] Where `wau = 0`, write `Infinity` for `wpu_rate`, and document a README question about the policy before leadership sharing.
+- [x] Implement `ANY` by unioning distinct active people across measured tools.
+- [x] Implement `ANY` power users by unioning distinct people meeting a power threshold on at least one measured tool.
+- [x] Deduplicate overlap across Quill and Atlas; a person is counted once in `ANY`.
+- [x] Set `ANY.measured = true` only when both tools are measured for the week.
+- [x] When `ANY` is not measured, leave `wau`, `wpu`, and `wpu_rate` blank.
+- [x] Preserve `ANY` as a supplemental portfolio metric and explain it as unique people active on either measured tool.
+- [x] Document unresolved implementation policy decisions in the README.
 
 ## Stage 0: Repository Baseline
 
@@ -54,7 +54,7 @@
 - [x] Add a documented run command to the README.
 - [x] Run a narrow configuration/scaffolding validation.
 - [x] Commit the stage changes to `main`.
-- [ ] Do not push until explicitly authorized.
+- [x] Push only after explicit authorization.
 
 ## Stage 2: Shared Identity and HR Scope
 
@@ -65,8 +65,8 @@
 - [x] Record data issue counts for duplicate IDs, missing IDs, and division changes.
 - [x] Add focused tests for normalization and latest effective date.
 - [x] Update the README with the implementation approach and discovered HR issues.
-- [ ] Commit tested shared identity/HR scope code.
-- [ ] Do not push until explicitly authorized.
+- [x] Commit tested shared identity/HR scope code.
+- [x] Push only after explicit authorization.
 
 ## Stage 3: Quill Metrics
 
@@ -77,7 +77,7 @@
 - [x] Add focused tests for UTC boundaries, duplicate events, ID normalization, and thresholds.
 - [x] Update the README with Quill handling and observed Quill data issues.
 - [x] Commit tested Quill logic.
-- [ ] Do not push until explicitly authorized.
+- [x] Push only after explicit authorization.
 
 ## Stage 4: Atlas Metrics and Re-delivery
 
@@ -90,45 +90,45 @@
 - [x] Add focused tests for workbook layout, week mapping, thresholds, and re-delivery replacement.
 - [x] Update the README with Atlas handling and observed workbook/data issues.
 - [x] Commit the modular refactor and tested Atlas logic.
-- [ ] Do not push until explicitly authorized.
+- [x] Push only after explicit authorization.
 
 ## Stage 5: Reporting Table and ANY
 
-- [ ] Produce exactly one row per reporting Sunday for `quill`, `atlas`, and `ANY`.
-- [ ] Preserve reporting columns in this order: `week_start, tool_id, wau, wpu, wpu_rate, measured`.
-- [ ] Calculate `wpu_rate = wpu / wau` and round to 4 decimal places.
-- [ ] Output `Infinity` when a measured row has `wau = 0` and `wpu = 0` until a policy is approved.
-- [ ] Leave `wau`, `wpu`, and `wpu_rate` blank for unmeasured rows.
-- [ ] Write `true` and `false` for CSV measured values.
-- [ ] Union distinct active and power users for `ANY` only from measured tools.
-- [ ] Mark `ANY` measured only when both tools are measured.
-- [ ] Add focused tests for no-data, measured-zero, redelivery, and `ANY` overlap behavior.
-- [ ] Update the README with output format and result policy questions.
-- [ ] Commit tested rollup generation.
-- [ ] Do not push.
+- [x] Produce exactly one row per reporting Sunday for `quill`, `atlas`, and `ANY`.
+- [x] Preserve reporting columns in this order: `week_start, tool_id, wau, wpu, wpu_rate, measured`.
+- [x] Calculate `wpu_rate = wpu / wau` and round to 4 decimal places.
+- [x] Output `Infinity` when a measured row has `wau = 0` and `wpu = 0` until a policy is approved.
+- [x] Leave `wau`, `wpu`, and `wpu_rate` blank for unmeasured rows.
+- [x] Write `true` and `false` for CSV measured values.
+- [x] Union distinct active and power users for `ANY` only from measured tools.
+- [x] Mark `ANY` measured only when both tools are measured.
+- [x] Add focused tests for no-data, measured-zero, redelivery, and `ANY` overlap behavior.
+- [x] Update the README with output format and result policy questions.
+- [x] Commit tested rollup generation.
+- [ ] Push Stage 5 only after explicit authorization.
 
 ## Stage 6: Tests and Data Issue Summary
 
-- [ ] Run the complete test suite.
-- [ ] Validate generated row counts and tool ordering.
-- [ ] Compare representative totals against independent calculations.
-- [ ] Record approximate counts for duplicate, whitespace/case, unknown-HR, non-ADV, and outside-window records.
-- [ ] Disclose confirmed Atlas redelivery behavior.
-- [ ] Update the README with confirmed data issues and affected record counts.
-- [ ] Commit tests and README data findings.
+- [x] Run the complete test suite.
+- [x] Validate generated row counts and tool ordering.
+- [x] Compare representative totals against independent calculations.
+- [x] Record approximate counts for duplicate, whitespace/case, unknown-HR, non-ADV, and outside-window records.
+- [x] Disclose confirmed Atlas redelivery behavior.
+- [x] Update the README with confirmed data issues and affected record counts.
+- [x] Commit tests and README data findings.
 - [ ] Do not push.
 
 ## Stage 7: Leadership Summary and Production Guidance
 
-- [ ] Generate `out/weekly_tool_metrics.csv`.
-- [ ] Summarize only confirmed headline numbers for Advisory leaders.
-- [ ] Add three concise Head of Advisory bullets.
-- [ ] Include one caveat that must not be missed.
-- [ ] Add the README question on how `wau = 0` should be handled before leadership sharing.
-- [ ] Explain that `ANY` is supplemental and deduplicates overlap.
-- [ ] State what would be done next with more time.
-- [ ] Add 3-5 production and dashboard safeguards.
-- [ ] Commit generated output and final documentation.
+- [x] Generate `out/weekly_tool_metrics.csv`.
+- [x] Summarize only confirmed headline numbers for Advisory leaders.
+- [x] Add three concise Head of Advisory bullets.
+- [x] Include one caveat that must not be missed.
+- [x] Add the README question on how `wau = 0` should be handled before leadership sharing.
+- [x] Explain that `ANY` counts unique people active on either measured tool.
+- [x] State what would be done next with more time.
+- [x] Add 3-5 production and dashboard safeguards.
+- [x] Commit generated output and final documentation.
 - [ ] Do not push.
 
 ## Stage 8: Final Repository and ZIP Packaging

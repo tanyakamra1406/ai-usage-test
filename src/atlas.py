@@ -1,6 +1,7 @@
 import re
 from datetime import date, datetime, timedelta
 from pathlib import Path
+from typing import Any
 
 from openpyxl import load_workbook
 
@@ -113,7 +114,7 @@ def load_atlas_metrics(
     reporting_weeks: list[date],
     wau_threshold: int,
     wpu_threshold: int,
-) -> tuple[dict[date, dict[str, set[str]]], dict[str, int]]:
+) -> tuple[dict[date, dict[str, set[str]]], dict[str, Any]]:
     if wau_threshold < 1:
         raise ValueError("Atlas WAU threshold must be at least 1")
     if wpu_threshold < 1:
@@ -127,6 +128,7 @@ def load_atlas_metrics(
         "atlas_unknown_hr_rows": 0,
         "atlas_non_advisory_rows": 0,
         "atlas_replacements": 0,
+        "measured_weeks": set(),
     }
 
     for path in sorted(atlas_dir.glob("atlas_usage_*.xlsx")):
@@ -141,6 +143,7 @@ def load_atlas_metrics(
         )
 
         for week, people in week_rows.items():
+            stats["measured_weeks"].add(week)
             previous = deliveries.get(week)
             if previous is not None and extract_date > previous[0]:
                 stats["atlas_replacements"] += 1
