@@ -46,15 +46,15 @@
 
 ## Stage 1: Project Structure and Configuration
 
-- [ ] Add the Python entrypoint and supporting modules or functions.
-- [ ] Add `requirements.txt` or a dependency declaration only for libraries actually required.
-- [ ] Load and validate `data/reporting_config.json`.
-- [ ] Validate the reporting window and required tool definitions.
-- [ ] Build the ordered list of Sunday week starts in the reporting window.
-- [ ] Add a documented run command to the README.
-- [ ] Run a narrow configuration/scaffolding validation.
-- [ ] Commit the stage changes to `main`.
-- [ ] Do not push.
+- [x] Add the Python entrypoint and supporting modules or functions.
+- [x] Add `requirements.txt` or a dependency declaration only for libraries actually required.
+- [x] Load and validate `data/reporting_config.json`.
+- [x] Validate the reporting window and required tool definitions.
+- [x] Build the ordered list of Sunday week starts in the reporting window.
+- [x] Add a documented run command to the README.
+- [x] Run a narrow configuration/scaffolding validation.
+- [x] Commit the stage changes to `main`.
+- [ ] Do not push until explicitly authorized.
 
 ## Stage 2: Shared Identity and HR Scope
 
