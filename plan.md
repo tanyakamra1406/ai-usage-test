@@ -58,15 +58,15 @@
 
 ## Stage 2: Shared Identity and HR Scope
 
-- [ ] Implement CSV input loading for `hr_roster.csv`.
-- [ ] Implement ID normalization and effective-date parsing.
-- [ ] Select each normalized person's latest HR record.
-- [ ] Build the set of latest Advisory IDs.
-- [ ] Record data issue counts for duplicate IDs, missing IDs, and division changes.
-- [ ] Add focused tests for normalization and latest effective date.
-- [ ] Update the README with the implementation approach and discovered HR issues.
+- [x] Implement CSV input loading for `hr_roster.csv`.
+- [x] Implement ID normalization and effective-date parsing.
+- [x] Select each normalized person's latest HR record.
+- [x] Build the set of latest Advisory IDs.
+- [x] Record data issue counts for duplicate IDs, missing IDs, and division changes.
+- [x] Add focused tests for normalization and latest effective date.
+- [x] Update the README with the implementation approach and discovered HR issues.
 - [ ] Commit tested shared identity/HR scope code.
-- [ ] Do not push.
+- [ ] Do not push until explicitly authorized.
 
 ## Stage 3: Quill Metrics
 

@@ -1,4 +1,5 @@
 import argparse
+import csv
 import json
 from datetime import date, timedelta
 from pathlib import Path
@@ -58,6 +59,66 @@ def reporting_weeks(config: dict[str, Any]) -> list[date]:
     return weeks
 
 
+def normalize_id(value: Any) -> str:
+    if value is None:
+        return ""
+    return str(value).strip().upper()
+
+
+def load_latest_hr(path: Path) -> tuple[dict[str, dict[str, str]], dict[str, int]]:
+    latest: dict[str, dict[str, str]] = {}
+    stats = {
+        "hr_rows": 0,
+        "blank_ids": 0,
+        "normalized_whitespace_or_case_rows": 0,
+        "duplicate_normalized_ids": 0,
+    }
+
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        reader = csv.DictReader(handle)
+        required = {"Employee_ID", "Division", "Effective_Date"}
+        if reader.fieldnames is None or not required.issubset(reader.fieldnames):
+            raise ValueError("hr_roster.csv is missing required columns")
+
+        seen_ids: dict[str, int] = {}
+        for row in reader:
+            stats["hr_rows"] += 1
+            raw_id = row["Employee_ID"]
+            employee_id = normalize_id(raw_id)
+
+            if not employee_id:
+                stats["blank_ids"] += 1
+                continue
+
+            if raw_id != employee_id:
+                stats["normalized_whitespace_or_case_rows"] += 1
+
+            seen_ids[employee_id] = seen_ids.get(employee_id, 0) + 1
+
+            effective_date = date.fromisoformat(row["Effective_Date"])
+            existing = latest.get(employee_id)
+            if existing is None:
+                latest[employee_id] = dict(row)
+                continue
+
+            existing_date = date.fromisoformat(existing["Effective_Date"])
+            if effective_date > existing_date:
+                latest[employee_id] = dict(row)
+
+    stats["duplicate_normalized_ids"] = sum(
+        count - 1 for count in seen_ids.values() if count > 1
+    )
+    return latest, stats
+
+
+def advisory_ids(latest_hr: dict[str, dict[str, str]]) -> set[str]:
+    return {
+        employee_id
+        for employee_id, row in latest_hr.items()
+        if normalize_id(row.get("Division")) == "ADV"
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build the weekly AI tool adoption rollup")
     parser.add_argument(
@@ -70,7 +131,11 @@ def main() -> None:
 
     config = load_config(args.data_dir / "reporting_config.json")
     weeks = reporting_weeks(config)
+    latest_hr, hr_stats = load_latest_hr(args.data_dir / "hr_roster.csv")
+    advisory = advisory_ids(latest_hr)
     print("\n".join(week.isoformat() for week in weeks))
+    print(f"latest_advisory_ids={len(advisory)}")
+    print(f"hr_rows={hr_stats['hr_rows']}")
 
 
 if __name__ == "__main__":
