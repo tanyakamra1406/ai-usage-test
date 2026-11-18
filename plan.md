@@ -105,18 +105,18 @@
 - [x] Add focused tests for no-data, measured-zero, redelivery, and `ANY` overlap behavior.
 - [x] Update the README with output format and result policy questions.
 - [x] Commit tested rollup generation.
-- [ ] Push Stage 5 only after explicit authorization.
+- [x] Push Stage 5 after explicit authorization.
 
 ## Stage 6: Tests and Data Issue Summary
 
-- [x] Run the complete test suite.
+- [x] Run targeted tests for re-delivery replacement and `ANY` overlap/deduplication.
 - [x] Validate generated row counts and tool ordering.
 - [x] Compare representative totals against independent calculations.
 - [x] Record approximate counts for duplicate, whitespace/case, unknown-HR, non-ADV, and outside-window records.
 - [x] Disclose confirmed Atlas redelivery behavior.
 - [x] Update the README with confirmed data issues and affected record counts.
-- [x] Commit tests and README data findings.
-- [ ] Do not push.
+- [x] Commit targeted tests and README data findings.
+- [ ] Push Stage 6 only after explicit authorization.
 
 ## Stage 7: Leadership Summary and Production Guidance
 
