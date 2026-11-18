@@ -4,7 +4,7 @@ from pathlib import Path
 
 from openpyxl import Workbook
 
-from rollup import atlas_week_start, load_atlas_metrics
+from src.atlas import atlas_week_start, load_atlas_metrics
 from src.reporting import build_reporting_rows
 
 

@@ -1,7 +1,6 @@
 import csv
 from datetime import date
 from pathlib import Path
-from typing import Any
 
 from src.common import normalize_id
 
