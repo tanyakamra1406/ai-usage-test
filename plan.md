@@ -133,11 +133,11 @@
 
 ## Stage 8: Final Repository and ZIP Packaging
 
-- [ ] Verify no `data/` files are tracked or included in the deliverable.
-- [ ] Verify the output CSV has the required schema and values.
-- [ ] Verify README run instructions work from a clean environment.
-- [ ] Verify Git history and `.gitignore` are present.
-- [ ] Create a single ZIP containing code, README, output, and `.git/` but not `data/`.
-- [ ] Keep the ZIP outside Git or exclude it only if the delivered ZIP is required outside the repository.
-- [ ] Review the final repository status.
-- [ ] Ask for explicit permission before any push or remote update.
+- [x] Verify no `data/` files are tracked or included in the deliverable.
+- [x] Verify the output CSV has the required schema and values.
+- [x] Verify README run instructions work.
+- [x] Verify Git history and `.gitignore` are present.
+- [x] Create a single ZIP containing code, README, output, and `.git/` but not `data/`.
+- [x] Keep the ZIP outside Git.
+- [x] Review the final repository status.
+- [x] Ask for explicit permission before any push or remote update.
