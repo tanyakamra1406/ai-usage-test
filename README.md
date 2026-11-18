@@ -23,26 +23,24 @@ The command reads `data/` and writes `out/weekly_tool_metrics.csv`.
 
 ## Head of Advisory
 
-- Quill weekly WAU ranged from 381 to 641 people; Quill WPU ranged from 135 to 231 people.
-- Atlas weekly WAU ranged from 229 to 312 people in measured weeks; Atlas WPU ranged from 60 to 84 people.
-- `ANY` represents the number of unique people active on either Quill or Atlas. A person active on both tools is counted once. It reached 791 people in the week starting 2026-09-27.
-- Caveat: 2026-09-20 Atlas and `ANY` values are unknown because no Atlas data was delivered; they must not be interpreted as zero.
+- Quill averaged 532.9 WAU (35.4% of Advisory) and 199.0 WPU (13.2%) per week. Usage peaked in the week starting 2026-09-20 at 641 WAU (42.5%) and 231 WPU (15.3%), and was lowest in the week starting 2026-09-13 at 381 WAU (25.3%) and 135 WPU (9.0%).
+- Atlas averaged 264.9 WAU (17.6% of Advisory) and 70.4 WPU (4.7%) across measured weeks. Usage was highest in the week starting 2026-09-27 at 312 WAU (20.7%) and 84 WPU (5.6%), and lowest in the week starting 2026-08-16 at 229 WAU (15.2%) and 60 WPU (4.0%).
+- `ANY` reached 791 unique users in the week starting 2026-09-27 (52.5% of Advisory). A person active on both tools is counted once.
+- Caveat: 2026-09-20 Atlas and `ANY` values are unknown because no Atlas data was delivered; they must not be interpreted as a drop or as zero.
 
 ## Leadership Policy Question
 
-A measured tool with `wau = 0` would produce `wpu_rate = Infinity`. Before sharing a result with leaders, agree on whether this should remain `Infinity`, become blank, or be handled as a different defined state.
+If a measured tool has `wau = 0`, `wpu_rate = Infinity`; leadership should agree before release whether to show `Infinity`, leave it blank, or use a defined alternative.
 
 ## What to Do Next
 
-- Add independent source reconciliation and expected-row controls.
-- Add a repeatable data-quality report for rejected, unknown, and duplicate records.
-- Add automated end-to-end validation of every reporting week and tool row.
+- Retrieve Quill and Atlas data directly from their source APIs instead of files.
+- Use `out/weekly_tool_metrics.csv` in a dashboard tool to visualize weekly WAU, WPU, WPU rate, and `ANY` trends for leadership.
 - Clarify and document the leadership presentation rule for `ANY` and zero active users.
 
 ## Running in Production
 
-- Run on a schedule from an immutable reporting window and source snapshot.
-- Store source deliveries and processing outputs with timestamps and extract lineage.
-- Fail closed on missing required columns, thresholds, or reporting-window data; do not publish partial results.
-- Validate distinct-person counts, week coverage, re-delivery selection, and CSV schema before publication.
-- Add alerts for source gaps, unexpected duplicate rates, and leadership-dashboard refresh failures.
+- Agree on delivery timelines with both vendors, then schedule the rollup only after the source data is due and available.
+- Retrieve data from source APIs and retain copies of each delivery or extract for traceability.
+- Send an email or alert if the rollup or CSV generation fails.
+- Stop publication if required fields, thresholds, or reporting weeks are missing, and revalidate results before refreshing the dashboard.
